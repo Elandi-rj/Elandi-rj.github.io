@@ -1,3 +1,3 @@
 function ripples() {
-    window.location.href = "ripples/ripples.html";
+    window.location.href = 'ripples\ripples.html';
 }
