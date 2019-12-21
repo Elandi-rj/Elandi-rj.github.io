@@ -1,21 +1,31 @@
-let cols = 100; //rows
-const sclfactor = 30;
-const scl = sclfactor / (cols / (cols / 2));
-const center = sclfactor * (cols - 1) / 4;
-let arrBlocks = new Array(cols);
-let arrBuffer = new Array(cols);
-for (let i = 0; i < arrBlocks.length; i++) {
-    arrBlocks[i] = new Array();
-    arrBuffer[i] = new Array();
-    for (let j = 0; j < cols; j++) {
-        arrBlocks[i][j] = 0;
-        arrBuffer[i][j] = 0;
+let cols; //rows
+let sclfactor = 15;
+let scl;
+let center;
+let arrBlocks;
+let arrBuffer;
+
+function resizeGrid(resizePercent) {
+    scl = sclfactor / (resizePercent / 100);
+    center = sclfactor * (resizePercent - 1) / (resizePercent / 100 * 2);
+    arrBlocks = new Array(resizePercent);
+    arrBuffer = new Array(resizePercent);
+    for (let i = 0; i < resizePercent; i++) {
+        arrBlocks[i] = new Array();
+        arrBuffer[i] = new Array();
+        for (let j = 0; j < resizePercent; j++) {
+            arrBlocks[i][j] = 0;
+            arrBuffer[i][j] = 0;
+        }
     }
+    cols = resizePercent;
 }
 
 function setup() {
     createCanvas(windowWidth, windowHeight - 54, WEBGL);
     output.innerHTML = 100 - slider.value + "%";
+    outputScale.innerHTML = sliderScale.value + "%";
+    resizeGrid(100);
 }
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight - 54);
@@ -28,6 +38,15 @@ var strengthDampening = slider.value / 100;
 slider.oninput = function () {
     output.innerHTML = 100 - this.value + "%";
     strengthDampening = slider.value / 100;
+}
+
+var sliderScale = document.getElementById("myScaleRange");
+var outputScale = document.getElementById("demoScale");
+
+//Scale slider
+sliderScale.oninput = function () {
+    outputScale.innerHTML = this.value + "%";
+    resizeGrid(this.value);
 }
 
 var sliderStrength = document.getElementById("myStrengthRange");
@@ -66,20 +85,21 @@ function draw() {
     arrBuffer = arrTemp;
 
     let x = Math.round(map(mouseX, 0, windowWidth, 1, cols - 6));
-    let y = Math.round(map(mouseY, 0, windowHeight - 50, 1, cols - 6));
+    let y = Math.round(map(mouseY, 0, windowHeight, 1, cols - 4));
 
-    if (mouseIsPressed && mouseX < windowWidth && mouseY >= 0 && mouseX >= 0) {
+    if (mouseIsPressed && mouseX <= windowWidth && mouseY >= 0 && mouseX >= 0) {
         for (let i = 0; i < 5; i++) {
             for (var j = 1; j < 5; j++) {
+                if (y > cols - 6) { y = cols - 6 }
                 arrBlocks[x + i][y + j] = strengthMultiplier;
             }
         }
     }
+
 }
 function resetArray() {
     for (var i = 0; i < cols; i++) {
         for (var j = 0; j < cols; j++) {
-
             arrBuffer[i][j] = 0;
             arrBlocks[i][j] = 0;
         }

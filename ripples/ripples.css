@@ -9,6 +9,7 @@ p{
 input{
     margin-left: 10px;
     float: left;
+    width: 250px;
 }
 .buttoncontainer{
   float: left;
