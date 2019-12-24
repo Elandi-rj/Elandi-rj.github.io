@@ -4,12 +4,12 @@ body{
 }
 p{
     color: white;
-    padding-left: 10px;
+    float: left;
+    margin: 7px;
 }
 input{
-    margin-left: 10px;
-    float: left;
-    width: 250px;
+  margin: 0px;
+  padding: 0px;
 }
 .buttoncontainer{
   float: left;
@@ -17,6 +17,9 @@ input{
 }
 .slidecontainer{
   float: left;
+  width: 200px;
+  margin: 0px;
+  padding: 0px;
 }
 
 .slider::-webkit-slider-thumb {
@@ -33,3 +36,6 @@ input{
   height: 10px;
 }
 
+.check {
+  width: 10px;
+}

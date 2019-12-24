@@ -59,15 +59,20 @@ sliderStrength.oninput = function () {
     strengthMultiplier = sliderStrength.value - 0;
 }
 
+var isChecked = document.getElementById("chkbox");
+isChecked.oninput = function () {
+
+}
+
 function draw() {
     background(51);
     rotateX(PI / 3);
     translate(-center, -800 - 400, -200);
     frameRate(60);
     noStroke();
-    for (var i = 1; i < cols - 1; i++) {
+    for (var i = 1; i < arrBlocks.length - 1; i++) {
         beginShape(TRIANGLE_STRIP);
-        for (var j = 1; j < cols - 1; j++) {
+        for (var j = 1; j < arrBlocks.length - 1; j++) {
             fill(color(arrBlocks[j][i] + 50, arrBlocks[j][i] + 50, 150 + arrBlocks[j][i]));
             arrBuffer[i][j] =
                 ((arrBlocks[i - 1][j] +
@@ -83,6 +88,14 @@ function draw() {
     var arrTemp = arrBlocks;
     arrBlocks = arrBuffer;
     arrBuffer = arrTemp;
+
+
+    if (isChecked.checked) {
+        if (frameCount % 3 == 0) {
+            arrBlocks[Math.ceil(random(1, cols - 2))][Math.ceil(random(1, cols - 2))] = Math.ceil(random(50, strengthMultiplier));
+        }
+    }
+
 
     let x = Math.round(map(mouseX, 0, windowWidth, 1, cols - 6));
     let y = Math.round(map(mouseY, 0, windowHeight, 1, cols - 4));
