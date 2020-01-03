@@ -2,20 +2,31 @@ let cols; //rows
 let sclfactor = 15;
 let scl;
 let center;
-let arrBlocks;
-let arrBuffer;
+let arrBlocks = new Array(100);;
+let arrBuffer = new Array(100);;
 
 function resizeGrid(resizePercent) {
     scl = sclfactor / (resizePercent / 100);
+    let originalArrlength = arrBlocks.length;
     center = sclfactor * (resizePercent - 1) / (resizePercent / 100 * 2);
-    arrBlocks = new Array(resizePercent);
-    arrBuffer = new Array(resizePercent);
-    for (let i = 0; i < resizePercent; i++) {
-        arrBlocks[i] = new Array();
-        arrBuffer[i] = new Array();
-        for (let j = 0; j < resizePercent; j++) {
-            arrBlocks[i][j] = 0;
-            arrBuffer[i][j] = 0;
+    if (resizePercent > arrBlocks.length) {
+        for (let i = originalArrlength; i < resizePercent; i++) {
+            arrBlocks.push(new Array());
+            arrBuffer.push(new Array());
+        }
+        for (let i = 0; i < resizePercent; i++) {
+            for (let j = 0; j < resizePercent; j++) {
+                if (isNaN(arrBlocks[i][j])) {
+                    arrBlocks[i][j] = 0;
+                    arrBuffer[i][j] = 0;
+                }
+            }
+        }
+    }
+    else {
+        for (let i = 0; i < originalArrlength - resizePercent; i++) {
+            arrBlocks.pop();
+            arrBuffer.pop();
         }
     }
     cols = resizePercent;
@@ -26,6 +37,14 @@ function setup() {
     output.innerHTML = 100 - slider.value + "%";
     outputScale.innerHTML = sliderScale.value + "%";
     resizeGrid(100);
+    for (let i = 0; i < 100; i++) {
+        arrBlocks[i] = new Array();
+        arrBuffer[i] = new Array();
+        for (let j = 0; j < 100; j++) {
+            arrBlocks[i][j] = 0;
+            arrBuffer[i][j] = 0;
+        }
+    }
 }
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight - 54);
@@ -89,13 +108,11 @@ function draw() {
     arrBlocks = arrBuffer;
     arrBuffer = arrTemp;
 
-
     if (isChecked.checked) {
         if (frameCount % 3 == 0) {
             arrBlocks[Math.ceil(random(1, cols - 2))][Math.ceil(random(1, cols - 2))] = Math.ceil(random(50, strengthMultiplier));
         }
     }
-
 
     let x = Math.round(map(mouseX, 0, windowWidth, 1, cols - 6));
     let y = Math.round(map(mouseY, 0, windowHeight, 1, cols - 4));
