@@ -103,6 +103,8 @@ function draw() {
             vertex(j * scl, (i + 1) * scl, arrBlocks[j][i + 1]);
         }
         endShape();
+        arrBlocks[arrBlocks.length - 1][i] = 0;
+        arrBlocks[i][arrBlocks.length - 1] = 0;
     }
     var arrTemp = arrBlocks;
     arrBlocks = arrBuffer;
